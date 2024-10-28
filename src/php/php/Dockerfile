@@ -50,10 +50,14 @@ COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
 
 # Copy existing application directory contents
 COPY . /var/www
+COPY ./commands.sh /var/www/commands.sh
 
 # Set ownership and permissions for the storage and bootstrap/cache directories
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
     && chmod -R 777 /var/www/storage /var/www/bootstrap/cache
+
+# Run the setup script
+RUN /bin/bash /var/www/commands.sh
 
 # The EXPOSE instruction in a Dockerfile is used to inform Docker that the container will listen on the specified network port at runtime
 # The container will make port 9000 available for connections, which is the default port for PHP-FPM
